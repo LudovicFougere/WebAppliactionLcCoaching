@@ -15,6 +15,8 @@ namespace WebApplicationLcCoaching.Models
         {
         }
 
+        public virtual DbSet<FormulaireInit> FormulaireInit { get; set; }
+        public virtual DbSet<FormulaireSeance> FormulaireSeance { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -28,6 +30,50 @@ namespace WebApplicationLcCoaching.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<FormulaireInit>(entity =>
+            {
+                entity.ToTable("Formulaire_Init");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.AgeMetabolique).HasColumnName("Age_metabolique");
+
+                entity.Property(e => e.GraisseVisterale).HasColumnName("Graisse_visterale");
+
+                entity.Property(e => e.IdUser).HasColumnName("Id_user");
+
+                entity.Property(e => e.MasseMusculaire).HasColumnName("Masse_musculaire");
+
+                entity.Property(e => e.MasseOsseuse).HasColumnName("Masse_osseuse");
+
+                entity.Property(e => e.PourcentGraisseCorporelle).HasColumnName("Pourcent_graisse_corporelle");
+
+                entity.Property(e => e.PourcentHydratation).HasColumnName("Pourcent_hydratation");
+            });
+
+            modelBuilder.Entity<FormulaireSeance>(entity =>
+            {
+                entity.ToTable("Formulaire_Seance");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.BilanSanguin)
+                    .HasColumnName("Bilan_sanguin")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.IdUser).HasColumnName("Id_User");
+
+                entity.Property(e => e.NiveauTechniqueMusculation).HasColumnName("Niveau_technique_musculation");
+
+                entity.Property(e => e.Photos).HasColumnType("image");
+
+                entity.Property(e => e.TestConditionPhysique).HasColumnName("Test_condition_physique");
+
+                entity.Property(e => e.TourTaille)
+                    .HasColumnName("Tour_taille")
+                    .HasMaxLength(50);
+            });
+
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
