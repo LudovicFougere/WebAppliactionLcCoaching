@@ -49,6 +49,12 @@ namespace WebApplicationLcCoaching.Models
                 entity.Property(e => e.PourcentGraisseCorporelle).HasColumnName("Pourcent_graisse_corporelle");
 
                 entity.Property(e => e.PourcentHydratation).HasColumnName("Pourcent_hydratation");
+
+                entity.HasOne(d => d.IdUserNavigation)
+                    .WithMany(p => p.FormulaireInit)
+                    .HasForeignKey(d => d.IdUser)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Users_Init");
             });
 
             modelBuilder.Entity<FormulaireSeance>(entity =>
@@ -61,7 +67,7 @@ namespace WebApplicationLcCoaching.Models
                     .HasColumnName("Bilan_sanguin")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.IdUser).HasColumnName("Id_User");
+                entity.Property(e => e.IdUser).HasColumnName("Id_user");
 
                 entity.Property(e => e.NiveauTechniqueMusculation).HasColumnName("Niveau_technique_musculation");
 
@@ -72,6 +78,12 @@ namespace WebApplicationLcCoaching.Models
                 entity.Property(e => e.TourTaille)
                     .HasColumnName("Tour_taille")
                     .HasMaxLength(50);
+
+                entity.HasOne(d => d.IdUserNavigation)
+                    .WithMany(p => p.FormulaireSeance)
+                    .HasForeignKey(d => d.IdUser)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Users_Seance");
             });
 
             modelBuilder.Entity<Users>(entity =>
@@ -85,6 +97,10 @@ namespace WebApplicationLcCoaching.Models
                 entity.Property(e => e.Prenom)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.Sexe)
+                    .IsRequired()
+                    .HasMaxLength(10);
             });
         }
     }

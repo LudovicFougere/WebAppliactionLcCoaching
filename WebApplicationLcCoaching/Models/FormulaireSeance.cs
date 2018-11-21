@@ -15,5 +15,7 @@ namespace WebApplicationLcCoaching.Models
         public string TourTaille { get; set; }
         public string Contrat { get; set; }
         public byte[] Photos { get; set; }
+
+        public Users IdUserNavigation { get; set; }
     }
 }

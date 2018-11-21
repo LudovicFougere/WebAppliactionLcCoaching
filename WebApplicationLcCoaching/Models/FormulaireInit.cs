@@ -16,5 +16,7 @@ namespace WebApplicationLcCoaching.Models
         public double? MasseOsseuse { get; set; }
         public double? Imc { get; set; }
         public double? GraisseVisterale { get; set; }
+
+        public Users IdUserNavigation { get; set; }
     }
 }
