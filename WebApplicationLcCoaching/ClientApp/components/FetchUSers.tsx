@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router';
 import { Link, NavLink } from 'react-router-dom';
 
 interface FetchUsersDataState {
-    empList: UserData[];
+    usersList: UserData[];
     loading: boolean;
 }
 
@@ -11,12 +11,12 @@ export class FetchUsers extends React.Component<RouteComponentProps<{}>, FetchUs
 
     constructor() {
         super();
-        this.state = { empList: [], loading: true };
+        this.state = { usersList: [], loading: true };
 
         fetch('api/User/Index')
             .then(response => response.json() as Promise<UserData[]>)
             .then(data => {
-                this.setState({ empList: data, loading: false });
+                this.setState({ usersList: data, loading: false });
             });
 
         // This binding is necessary to make "this" work in the callback 
@@ -28,7 +28,7 @@ export class FetchUsers extends React.Component<RouteComponentProps<{}>, FetchUs
     public render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : this.renderEmployeeTable(this.state.empList);
+            : this.renderEmployeeTable(this.state.usersList);
 
         return <div>
             <h1>Users Data</h1>
@@ -41,8 +41,8 @@ export class FetchUsers extends React.Component<RouteComponentProps<{}>, FetchUs
     }
 
     // Handle Delete request for an employee 
-    private handleDelete(id: number) {
-        if (!confirm("Do you want to delete employee with Id: " + id))
+    private handleDelete(id: number, nom: string, prenom: string) {
+        if (!confirm("Voulez-vous vraiment supprimer l'utilisateur : " + prenom + " " + nom))
             return;
         else {
             fetch('api/User/Delete/' + id, {
@@ -50,7 +50,7 @@ export class FetchUsers extends React.Component<RouteComponentProps<{}>, FetchUs
             }).then(data => {
                 this.setState(
                     {
-                        empList: this.state.empList.filter((rec) => {
+                        usersList: this.state.usersList.filter((rec) => {
                             return (rec.userId != id);
                         })
                     });
@@ -77,18 +77,18 @@ export class FetchUsers extends React.Component<RouteComponentProps<{}>, FetchUs
                 </tr>
             </thead>
             <tbody>
-                {empList.map(emp =>
-                    <tr key={emp.userId}>
+                {empList.map(user =>
+                    <tr key={user.userId}>
                         <td></td>
-                        <td>{emp.userId}</td>
-                        <td>{emp.nom}</td>
-                        <td>{emp.prenom}</td>
-                        <td>{emp.age}</td>
-                        <td>{emp.gender}</td>
-                        <td>{emp.dateLimite}</td>
+                        <td>{user.userId}</td>
+                        <td>{user.nom}</td>
+                        <td>{user.prenom}</td>
+                        <td>{user.age}</td>
+                        <td>{user.sexe}</td>
+                        <td>{user.dateLimite}</td>
                         <td>
-                            <a className="action" onClick={(id) => this.handleEdit(emp.userId)}>Edit</a>  |
-                            <a className="action" onClick={(id) => this.handleDelete(emp.userId)}>Delete</a>
+                            <a className="action" onClick={(id) => this.handleEdit(user.userId)}>Edit</a>  |
+                            <a className="action" onClick={(id) => this.handleDelete(user.userId, user.nom, user.prenom)}>Delete</a>
                         </td>
                     </tr>
                 )}
@@ -104,6 +104,6 @@ export class UserData {
     nom: string = "";
     prenom: string = "";
     age: string = "";
-    gender: string = "";
+    sexe: string = "";
     dateLimite: string = "";
 }

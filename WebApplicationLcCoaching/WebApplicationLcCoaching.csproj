@@ -33,10 +33,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\components\AddUser.tsx" />
     <None Remove="ClientApp\components\FetchUSers.tsx" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\components\AddUser.tsx" />
     <TypeScriptCompile Include="ClientApp\components\FetchUsers.tsx" />
   </ItemGroup>
 
